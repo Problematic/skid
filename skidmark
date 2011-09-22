@@ -21,15 +21,19 @@ foreach ($file_classes as $file_class) {
     }
 }
 
+$timer = 0;
+
 $methods = $reflObj->getMethods(\ReflectionMethod::IS_PUBLIC);
 foreach ($methods as $method) {
     $methodName = $method->getName();
     if (0 === stripos($methodName, 'test')) {
+        $start = xdebug_time_index();
         $obj->{$methodName}();
+        $timer += (xdebug_time_index() - $start);
     }
 }
 
-echo \skidmark::getStats();
+echo \skidmark::getStats($timer);
 
 class skidmark
 {
@@ -46,9 +50,9 @@ class skidmark
         }
     }
 
-    public static function getStats()
+    public static function getStats($timer)
     {
-        return sprintf("\nskidmark: %d tests, %d failed\n", self::$tests, self::$failed);
+        return sprintf("\nskidmark: %d tests, %d failed, %f seconds\n", self::$tests, self::$failed, $timer);
     }
 
 }
