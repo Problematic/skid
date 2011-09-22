@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+array_shift($argv);
+$file = $argv[0];
+$class = basename($file, '.php');
+
+$classes = get_declared_classes();
+require_once($file);
+$file_classes = array_diff(get_declared_classes(), $classes);
+
+foreach ($file_classes as $file_class) {
+    $bits = explode('\\', $file_class);
+    if (array_pop($bits) == $class) {
+        $obj = new $file_class();
+        $reflObj = new \ReflectionObject($obj);
+        break;
+    }
+}
+
+$methods = $reflObj->getMethods(\ReflectionMethod::IS_PUBLIC);
+foreach ($methods as $method) {
+    $methodName = $method->getName();
+    if (0 === strpos($methodName, 'skid')) {
+        $obj->{$methodName}();
+    }
+}
+
+class skidmark
+{
+
+    public static function ASSERT($assertion)
+    {
+        $backtrace = debug_backtrace();
+
+        $calledFrom = explode('\\', $backtrace[1]['class']);
+        $shortMethod = array_pop($calledFrom) . $backtrace[1]['type'] . $backtrace[1]['function'];
+
+        echo sprintf("%s on line %d (%s): %s\n", $backtrace[0]['file'], $backtrace[0]['line'], $shortMethod, $assertion ? 'pass' : 'FAIL!');
+    }
+
+}
