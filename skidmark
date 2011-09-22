@@ -20,7 +20,7 @@ foreach ($file_classes as $file_class) {
 $methods = $reflObj->getMethods(\ReflectionMethod::IS_PUBLIC);
 foreach ($methods as $method) {
     $methodName = $method->getName();
-    if (0 === strpos($methodName, 'skid')) {
+    if (0 === stripos($methodName, 'test')) {
         $obj->{$methodName}();
     }
 }
@@ -30,12 +30,7 @@ class skidmark
 
     public static function ASSERT($assertion)
     {
-        $backtrace = debug_backtrace();
-
-        $calledFrom = explode('\\', $backtrace[1]['class']);
-        $shortMethod = array_pop($calledFrom) . $backtrace[1]['type'] . $backtrace[1]['function'];
-
-        echo sprintf("%s on line %d (%s): %s\n", $backtrace[0]['file'], $backtrace[0]['line'], $shortMethod, $assertion ? 'pass' : 'FAIL!');
+        echo sprintf("%s:%d\t\t%s\n", xdebug_call_file(), xdebug_call_line(), $assertion ? 'ok' : 'FAILED');
     }
 
 }
