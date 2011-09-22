@@ -4,9 +4,10 @@ Usage is stupid simple: drop skid into a directory and `skid path/to/test_file.p
 skid will instantiate the class with the same name as the file (class `test_file` in our example here)
 and execute any public methods beginning with `test`.
 
-**TODO:**
+**TODO**
 
  - Run tests on a directory (`skid .`)
  - Exception handling in tests
  - Isolating assert calls (mostly for point above)
+ - Code coverage?
  - etc.
