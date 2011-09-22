@@ -48,6 +48,8 @@ class skidmark
         if (!$assertion) {
             ++self::$failed;
         }
+
+        return (bool)$assertion;
     }
 
     public static function getStats($timer)
