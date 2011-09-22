@@ -5,6 +5,10 @@ $file = $argv[0];
 $class = basename($file, '.php');
 
 $classes = get_declared_classes();
+if (!file_exists($file)) {
+    echo sprintf("Test file '%s' does not exist. Aborting.\n", $file);
+    exit(1);
+}
 require_once($file);
 $file_classes = array_diff(get_declared_classes(), $classes);
 
