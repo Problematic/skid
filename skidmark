@@ -25,12 +25,26 @@ foreach ($methods as $method) {
     }
 }
 
+echo \skidmark::getStats();
+
 class skidmark
 {
+
+    protected static $tests = 0;
+    protected static $failed = 0;
 
     public static function ASSERT($assertion)
     {
         echo sprintf("%s:%d\t\t%s\n", xdebug_call_file(), xdebug_call_line(), $assertion ? 'ok' : 'FAILED');
+        ++self::$tests;
+        if (!$assertion) {
+            ++self::$failed;
+        }
+    }
+
+    public static function getStats()
+    {
+        return sprintf("\nskidmark: %d tests, %d failed\n", self::$tests, self::$failed);
     }
 
 }
