@@ -43,7 +43,18 @@ class skidmark
 
     public static function ASSERT($assertion)
     {
-        echo sprintf("%s:%d\t\t%s\n", xdebug_call_file(), xdebug_call_line(), $assertion ? 'ok' : 'FAILED');
+        $call_file = xdebug_call_file();
+        $call_line = xdebug_call_line();
+
+        $lines = file($call_file);
+        $lines = array_combine(range(1, count($lines)), array_values($lines));
+        $line = trim($lines[$call_line]);
+        $matches = array();
+        preg_match('/assert\((.+)\)/i', $line, $matches);
+
+        $expression = $matches[1];
+
+        echo sprintf("%s:%d\t\t%s\t\t%s\n", $call_file, $call_line, $assertion ? 'ok' : 'FAILED', $expression);
         ++self::$tests;
         if (!$assertion) {
             ++self::$failed;
