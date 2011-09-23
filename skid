@@ -33,9 +33,9 @@ foreach ($methods as $method) {
     }
 }
 
-echo \skidmark::getStats($timer);
+echo \skid::getStats($timer);
 
-class skidmark
+class skid
 {
 
     protected static $tests = 0;
@@ -65,7 +65,7 @@ class skidmark
 
     public static function getStats($timer)
     {
-        return sprintf("\nskidmark: %d tests, %d failed, %f seconds\n", self::$tests, self::$failed, $timer);
+        return sprintf("\nskid: %d tests, %d failed, %f seconds\n", self::$tests, self::$failed, $timer);
     }
 
 }
